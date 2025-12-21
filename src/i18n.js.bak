@@ -1,0 +1,163 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+// import LanguageDetector from 'i18next-browser-languagedetector';
+
+i18n
+    // detect user language
+    // learn more: https://github.com/i18next/i18next-browser-languageDetector
+    // .use(LanguageDetector)
+    // pass the i18n instance to react-i18next.
+    .use(initReactI18next)
+    // init i18next
+    // for all options read: https://www.i18next.com/overview/configuration-options
+    .init({
+        debug: true,
+        fallbackLng: 'en',
+        interpolation: {
+            escapeValue: false, // not needed for react as it escapes by default
+        },
+        resources: {
+            en: {
+                translation: {
+                    nav: {
+                        home: 'Home',
+                        ecosystem: 'Ecosystem',
+                        features: 'Features',
+                        about: 'About',
+                        github: 'GitHub'
+                    },
+                    hero: {
+                        title_prefix: 'Explore the',
+                        title_highlight: 'Ecosystem',
+                        subtitle: 'A curated collection of projects, tools, and resources built by the CodeFE team. Discover knowledge, wealth management, and games.',
+                        cta: 'Get Started'
+                    },
+                    features: {
+                        title: 'Innovation at Scale',
+                        desc: 'Building the future of web technology with modern stacks.',
+                        performance: {
+                            title: 'High Performance',
+                            desc: 'Built on Vite and Next.js for blazing fast user experiences.'
+                        },
+                        security: {
+                            title: 'Secure & Reliable',
+                            desc: 'Enterprise-grade practices in authentication and data handling.'
+                        },
+                        global: {
+                            title: 'Global Scale',
+                            desc: 'Designed to serve users worldwide with i18n support built-in.'
+                        },
+                        modern: {
+                            title: 'Modern Stack',
+                            desc: 'Leveraging the latest in React, Tailwind, and Node.js ecosystems.'
+                        }
+                    },
+                    projects: {
+                        coming_soon: 'Coming Soon',
+                        list: {
+                            poetry: {
+                                title: 'Poetry',
+                                description: 'A collection of classical poetry powered by modern tech.'
+                            },
+                            hmxy: {
+                                title: 'HMXY',
+                                description: 'Documentation and knowledge base center.'
+                            },
+                            blog: {
+                                title: 'Blog',
+                                description: 'Technical insights, tutorials, and frontend development articles.'
+                            }
+                        }
+                    },
+                    footer: {
+                        slogan: 'Empowering developers and creators with modern tools, knowledge, and entertainment.',
+                        ecosystem: 'Ecosystem',
+                        poetry: 'Poetry',
+                        blog: 'Blog',
+                        hmxy: 'HMXY',
+                        resources: 'Resources',
+                        legal: 'Legal',
+                        documentation: 'Documentation',
+                        privacy_policy: 'Privacy Policy',
+                        terms_of_service: 'Terms of Service',
+                        rights_reserved: 'All rights reserved.',
+                        icp: 'ICP Filing:',
+                        privacy_policy_link: 'Privacy Policy',
+                        terms_of_service_link: 'Terms of Service'
+                    }
+                }
+            },
+            zh: {
+                translation: {
+                    nav: {
+                        home: '首页',
+                        ecosystem: '生态系统',
+                        features: '特性',
+                        about: '关于我们',
+                        github: 'GitHub'
+                    },
+                    hero: {
+                        title_prefix: '探索',
+                        title_highlight: 'CodeFE 生态',
+                        subtitle: 'CodeFE 团队构建的精选项目、工具和资源集合。发现知识、财富管理和游戏乐趣。',
+                        cta: '立即开始'
+                    },
+                    features: {
+                        title: '规模化创新',
+                        desc: '利用现代技术栈构建Web技术的未来。',
+                        performance: {
+                            title: '高性能体验',
+                            desc: '基于 Vite 和 Next.js 构建，为用户提供闪电般的加载速度和流畅体验。'
+                        },
+                        security: {
+                            title: '安全可靠',
+                            desc: '采用企业级标准的安全实践，全方位保障用户认证和数据处理的安全。'
+                        },
+                        global: {
+                            title: '全球化部署',
+                            desc: '内置国际化支持（i18n），基础设施专为服务全球用户而设计。'
+                        },
+                        modern: {
+                            title: '现代技术栈',
+                            desc: '深度整合 React、Tailwind 和 Node.js 生态系统的最新特性。'
+                        }
+                    },
+                    projects: {
+                        coming_soon: '敬请期待',
+                        list: {
+                            poetry: {
+                                title: '醉诗词',
+                                description: '古典诗词的数字化呈现，现代技术赋予传统文化新生。'
+                            },
+                            hmxy: {
+                                title: '鸿蒙学苑',
+                                description: '一站式文档与知识库中心，汇聚技术精华。'
+                            },
+                            blog: {
+                                title: '博客',
+                                description: '专注于前端开发的技术洞察、实战教程与深度文章。'
+                            }
+                        }
+                    },
+                    footer: {
+                        slogan: '为开发者和创作者提供现代工具、知识和娱乐。',
+                        ecosystem: '生态系统',
+                        poetry: '醉诗词',
+                        blog: '博客',
+                        hmxy: '鸿蒙学苑',
+                        resources: '资源',
+                        legal: '法律信息',
+                        documentation: '文档',
+                        privacy_policy: '隐私政策',
+                        terms_of_service: '服务条款',
+                        rights_reserved: '保留所有权利。',
+                        icp: 'ICP备案：',
+                        privacy_policy_link: '隐私政策',
+                        terms_of_service_link: '服务条款'
+                    }
+                }
+            }
+        }
+    });
+
+export default i18n;
