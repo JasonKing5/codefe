@@ -7,6 +7,7 @@ import { Projects } from "@/components/sections/Projects";
 // import { Stats } from "@/components/sections/Stats";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
+import ToolContainer from "@/components/ToolContainer";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           } />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/tool/*" element={<ToolContainer />} />
         </Routes>
       </main>
       <Footer />
