@@ -27,12 +27,14 @@ i18n
                         github: 'GitHub'
                     },
                     hero: {
+                        tagline: 'Open Source Platform',
                         title_prefix: 'Explore the',
                         title_highlight: 'Ecosystem',
                         subtitle: 'A curated collection of projects, tools, and resources built by the CodeFE team. Discover knowledge, wealth management, and games.',
                         cta: 'Get Started'
                     },
                     features: {
+                        label: 'Why CodeFE',
                         title: 'Innovation at Scale',
                         desc: 'Building the future of web technology with modern stacks.',
                         performance: {
@@ -53,6 +55,8 @@ i18n
                         }
                     },
                     projects: {
+                        label: 'Our Projects',
+                        subtitle: 'Explore projects, tools, and resources built by the CodeFE team.',
                         coming_soon: 'Coming Soon',
                         list: {
                             poetry: {
@@ -62,6 +66,10 @@ i18n
                             hmxy: {
                                 title: 'HMXY',
                                 description: 'Documentation and knowledge base center.'
+                            },
+                            firebox: {
+                                title: 'FIREbox',
+                                description: 'A curated AI toolbox for productivity and creativity.'
                             },
                             blog: {
                                 title: 'Blog',
@@ -75,6 +83,7 @@ i18n
                         poetry: 'Poetry',
                         blog: 'Blog',
                         hmxy: 'HMXY',
+                        firebox: 'FIREbox',
                         resources: 'Resources',
                         legal: 'Legal',
                         documentation: 'Documentation',
@@ -200,12 +209,14 @@ i18n
                         github: 'GitHub'
                     },
                     hero: {
+                        tagline: '开源平台',
                         title_prefix: '探索',
                         title_highlight: 'CodeFE 生态',
                         subtitle: 'CodeFE 团队构建的精选项目、工具和资源集合。发现知识、财富管理和游戏乐趣。',
                         cta: '立即开始'
                     },
                     features: {
+                        label: '为什么选择 CodeFE',
                         title: '规模化创新',
                         desc: '利用现代技术栈构建Web技术的未来。',
                         performance: {
@@ -226,6 +237,8 @@ i18n
                         }
                     },
                     projects: {
+                        label: '我们的项目',
+                        subtitle: '探索 CodeFE 团队构建的项目、工具和资源。',
                         coming_soon: '敬请期待',
                         list: {
                             poetry: {
@@ -235,6 +248,10 @@ i18n
                             hmxy: {
                                 title: '鸿蒙学苑',
                                 description: '一站式文档与知识库中心，汇聚技术精华。'
+                            },
+                            firebox: {
+                                title: '财富宝',
+                                description: 'AI 工具箱，提升生产力与创造力的智能助手集合。'
                             },
                             blog: {
                                 title: '博客',
@@ -248,6 +265,7 @@ i18n
                         poetry: '醉诗词',
                         blog: '博客',
                         hmxy: '鸿蒙学苑',
+                        firebox: '财富宝',
                         resources: '资源',
                         legal: '法律信息',
                         documentation: '文档',

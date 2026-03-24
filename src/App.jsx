@@ -18,7 +18,6 @@ function App() {
           <Route path="/" element={
             <>
               <Hero />
-              {/* <Stats /> */}
               <Features />
               <Projects />
             </>
