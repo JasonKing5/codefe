@@ -1,0 +1,36 @@
+<svg width="100%" height="100%" viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-text { 
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+        font-weight: 800; 
+        font-size: 38px; 
+        letter-spacing: -3px; 
+      }
+    </style>
+  </defs>
+
+  <!-- 左侧图标 -->
+  <g transform="scale(0.6)">
+    <rect x="0" y="0" width="18" height="10" rx="5" fill="#2979FF"/>
+    <circle cx="27" cy="5" r="5" fill="#00E676"/>
+    <rect x="36" y="0" width="18" height="10" rx="5" fill="#D500F9"/>
+    <circle cx="63" cy="5" r="5" fill="#FFAB00"/>
+
+    <rect x="0" y="18" width="18" height="10" rx="5" fill="#FF3D00"/>
+    <rect x="22" y="18" width="18" height="10" rx="5" fill="#FFAB00"/>
+    <rect x="44" y="18" width="18" height="10" rx="5" fill="#2979FF"/>
+
+    <rect x="0" y="36" width="18" height="10" rx="5" fill="#D500F9"/>
+    <circle cx="27" cy="41" r="5" fill="#00E676"/>
+    <circle cx="41" cy="41" r="5" fill="#FF3D00"/>
+
+    <circle cx="5" cy="59" r="5" fill="#FFAB00"/>
+  </g>
+
+  <!-- 右侧文字 -->
+  <text x="48" y="34" class="logo-text">
+    <tspan fill="#111111">CODE</tspan>
+    <tspan fill="#2962FF">FE</tspan>
+  </text>
+</svg>

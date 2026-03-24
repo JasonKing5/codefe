@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { LanguageToggle } from "@/components/layout/LanguageToggle";
+import { Logo } from "@/components/layout/Logo";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
@@ -64,7 +65,7 @@ export function Navbar() {
                     }}
                     aria-label="Go to home"
                 >
-                    <img className="w-14 h-full" src="/logo.png" alt="CodeFE" />
+                    <Logo />
                     {/* CodeFE */}
                 </button>
 

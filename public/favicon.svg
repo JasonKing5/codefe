@@ -1,0 +1,28 @@
+<svg width="100%" height="100%" viewBox="0 0 68 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+     精确计算的边界：
+     宽: 18+4+10+4+18+4+10 = 68px
+     高: 10*4 + 8*3 = 64px
+     ViewBox 设置为 "0 0 68 64" 可实现无缝填充
+  -->
+  <g fill="none">
+    <!-- Row 1: C -->
+    <rect x="0" y="0" width="18" height="10" rx="5" fill="#2979FF"/>
+    <circle cx="27" cy="5" r="5" fill="#00E676"/>
+    <rect x="36" y="0" width="18" height="10" rx="5" fill="#D500F9"/>
+    <circle cx="63" cy="5" r="5" fill="#FFAB00"/>
+
+    <!-- Row 2: O -->
+    <rect x="0" y="18" width="18" height="10" rx="5" fill="#FF3D00"/>
+    <rect x="22" y="18" width="18" height="10" rx="5" fill="#FFAB00"/>
+    <rect x="44" y="18" width="18" height="10" rx="5" fill="#2979FF"/>
+
+    <!-- Row 3: D -->
+    <rect x="0" y="36" width="18" height="10" rx="5" fill="#D500F9"/>
+    <circle cx="27" cy="41" r="5" fill="#00E676"/>
+    <circle cx="41" cy="41" r="5" fill="#FF3D00"/>
+
+    <!-- Row 4: E -->
+    <circle cx="5" cy="59" r="5" fill="#FFAB00"/>
+  </g>
+</svg>

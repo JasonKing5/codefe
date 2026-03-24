@@ -9,62 +9,55 @@ export function Projects() {
 
     return (
         <section id="projects" className="py-24 container mx-auto px-4">
-            <div className="mb-16 text-center">
-                <h2 className="text-3xl md:text-5xl font-bold mb-4">{t('nav.ecosystem')}</h2>
-                <p className="text-lg text-muted-foreground">{t('hero.subtitle')}</p>
-            </div>
+            <motion.div
+                className="mb-16 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5 }}
+            >
+                <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">{t('nav.ecosystem')}</h2>
+                <p className="text-lg text-muted-foreground">{t('projects.subtitle')}</p>
+            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                 {projects.map((project, index) => (
                     <motion.a
                         key={project.id}
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group block h-full"
+                        className="group block"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        whileHover={{ scale: 1.02 }}
+                        viewport={{ once: true, margin: "-100px" }}
                         transition={{ delay: index * 0.1 }}
                     >
-                        <div className="relative h-64 md:h-80 overflow-hidden rounded-3xl border border-border/50 bg-card shadow-lg transition-all duration-300 hover:shadow-2xl">
-                            {/* Background Image - 默认清晰，悬停时轻微放大 */}
-                            <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                                style={{ backgroundImage: `url(${project.image})` }}
-                            />
-
-                            {/* 渐变遮罩层 - 默认半透明 */}
-                            <div className={`absolute inset-0 bg-linear-to-br ${project.gradient} opacity-30 transition-opacity duration-500`} />
-
-                            {/* 底部遮罩层 - 默认显示，悬停时虚化 */}
-                            <div className="absolute bottom-0 left-0 right-0 h-3/5 bg-linear-to-t from-black/60 via-black/30 to-transparent backdrop-blur-none group-hover:backdrop-blur transition-all duration-500" />
-
-                            <div className="relative z-10 p-8 h-full flex flex-col justify-end">
-                                <div className="flex justify-between items-start mb-auto">
-                                    {/* Badge or Icon */}
-                                    {project.status === 'coming-soon' ? (
-                                        <Badge variant="outline" className="border-yellow-500/50 text-yellow-500 bg-black/70 backdrop-blur-md shadow-lg">
-                                            {t('projects.coming_soon')}
-                                        </Badge>
-                                    ) : (
-                                        <div className="bg-black/70 backdrop-blur-md rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0">
-                                            <ExternalLink className="w-5 h-5 text-white" />
-                                        </div>
-                                    )}
+                        <div className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <div className="p-7 flex gap-5">
+                                {/* Thumbnail */}
+                                <div className="shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden bg-muted">
+                                    <img
+                                        src={project.image}
+                                        alt={t(`${project.translationKey}.title`)}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
                                 </div>
 
-                                <div className="space-y-4">
-                                    <h3 className="text-3xl font-bold text-white drop-shadow-lg">
-                                        {t(`${project.translationKey}.title`, { defaultValue: project.title })}
-                                    </h3>
-                                    <p className="text-white/90 line-clamp-2 text-lg drop-shadow">
-                                        {t(`${project.translationKey}.description`, { defaultValue: project.description })}
+                                {/* Content */}
+                                <div className="flex-1 min-w-0 flex flex-col">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <h3 className="text-xl font-bold">
+                                            {t(`${project.translationKey}.title`)}
+                                        </h3>
+                                        <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-1" />
+                                    </div>
+                                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                                        {t(`${project.translationKey}.description`)}
                                     </p>
-                                    <div className="flex flex-wrap gap-2 pt-2">
+                                    <div className="flex flex-wrap gap-1.5 mt-auto">
                                         {project.tags.map(tag => (
-                                            <Badge key={tag} variant="secondary" className="bg-black/60 backdrop-blur border-0 text-white/90 shadow-lg">
+                                            <Badge key={tag} variant="secondary" className="text-xs bg-secondary/80 text-secondary-foreground border-0">
                                                 {tag}
                                             </Badge>
                                         ))}
