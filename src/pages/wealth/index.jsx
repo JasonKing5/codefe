@@ -267,11 +267,12 @@ export default function SmartFinanceTool() {
 
   // 导出数据
   const handleExport = () => {
-    const dataStr = JSON.stringify(transactions, null, 2);
+    const exportData = { transactions, customCategories };
+    const dataStr = JSON.stringify(exportData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
+
     const exportFileDefaultName = `transactions-${new Date().toISOString().split('T')[0]}.json`;
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
@@ -289,6 +290,16 @@ export default function SmartFinanceTool() {
         const importedData = JSON.parse(event.target?.result);
         if (Array.isArray(importedData)) {
           setTransactions(importedData);
+          alert('数据导入成功！');
+        } else if (importedData && Array.isArray(importedData.transactions)) {
+          setTransactions(importedData.transactions);
+          if (Array.isArray(importedData.customCategories) && importedData.customCategories.length > 0) {
+            setCustomCategories(prev => {
+              const existingIds = new Set(prev.map(c => c.id));
+              const newCategories = importedData.customCategories.filter(c => !existingIds.has(c.id));
+              return [...prev, ...newCategories];
+            });
+          }
           alert('数据导入成功！');
         } else {
           alert('导入的文件格式不正确');
