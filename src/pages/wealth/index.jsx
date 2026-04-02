@@ -266,17 +266,33 @@ export default function SmartFinanceTool() {
   };
 
   // 导出数据
-  const handleExport = () => {
+  const handleExport = async () => {
     const exportData = { transactions, customCategories };
-    const dataStr = JSON.stringify(exportData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
     const exportFileDefaultName = `transactions-${new Date().toISOString().split('T')[0]}.json`;
 
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
+    try {
+      const res = await fetch('https://api-analytics.codefe.cn/api/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: exportData, filename: exportFileDefaultName }),
+      });
+      if (!res.ok) throw new Error('Download API failed');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const linkElement = document.createElement('a');
+      linkElement.href = url;
+      linkElement.download = exportFileDefaultName;
+      linkElement.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      // fallback: data URI 方式（桌面端兼容）
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+    }
   };
 
   // 导入数据
