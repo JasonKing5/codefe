@@ -52,6 +52,8 @@ export default function SmartFinanceTool() {
     date: new Date().toISOString().split('T')[0]
   });
 
+  const [exportDialogData, setExportDialogData] = useState(null);
+
   const settingsRef = useRef(null);
   const categoryManagerRef = useRef(null);
   
@@ -271,14 +273,16 @@ export default function SmartFinanceTool() {
     if (navigator.canShare) {
       const file = new File([blob], filename, { type: 'application/json' });
       if (navigator.canShare({ files: [file] })) {
-        navigator.share({ files: [file] }).catch(() => fallbackDownload(blob, filename));
+        navigator.share({ files: [file] }).catch(() => showExportDialog(blob));
         return;
       }
     }
-    fallbackDownload(blob, filename);
+    // Web Share 不可用时，尝试传统下载 + 弹出复制弹框作为保底
+    tryBlobDownload(blob, filename);
+    showExportDialog(blob);
   };
 
-  const fallbackDownload = (blob, filename) => {
+  const tryBlobDownload = (blob, filename) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -290,6 +294,30 @@ export default function SmartFinanceTool() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }, 150);
+  };
+
+  const showExportDialog = async (blob) => {
+    const text = await blob.text();
+    setExportDialogData(text);
+  };
+
+  const handleCopyExportData = async () => {
+    if (!exportDialogData) return;
+    try {
+      await navigator.clipboard.writeText(exportDialogData);
+      alert('已复制到剪贴板！');
+    } catch {
+      // clipboard API 不可用时，使用 textarea 选中方式
+      const textarea = document.createElement('textarea');
+      textarea.value = exportDialogData;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      alert('已复制到剪贴板！');
+    }
   };
 
   // 导出数据
@@ -946,6 +974,55 @@ export default function SmartFinanceTool() {
                   </ul>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 导出数据弹框（兼容不支持下载的浏览器） */}
+      {exportDialogData && (
+        <div className="modal-overlay" onClick={() => setExportDialogData(null)}>
+          <div className="modal-content export-dialog" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>导出数据</h3>
+              <button className="close-btn" onClick={() => setExportDialogData(null)}>
+                <FaTimes />
+              </button>
+            </div>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '0 0 8px' }}>
+              如果下载未自动开始，请点击下方按钮复制数据，然后粘贴保存到文件中。
+            </p>
+            <textarea
+              readOnly
+              value={exportDialogData}
+              style={{
+                width: '100%',
+                height: '200px',
+                fontSize: '0.75rem',
+                fontFamily: 'monospace',
+                borderRadius: '8px',
+                border: '1px solid var(--border-color)',
+                padding: '8px',
+                resize: 'vertical',
+                background: 'var(--bg-secondary)',
+                color: 'var(--text-primary)',
+              }}
+            />
+            <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+              <button
+                className="btn btn-primary"
+                onClick={handleCopyExportData}
+                style={{ flex: 1 }}
+              >
+                复制数据到剪贴板
+              </button>
+              <button
+                className="btn"
+                onClick={() => setExportDialogData(null)}
+                style={{ flex: 0 }}
+              >
+                关闭
+              </button>
             </div>
           </div>
         </div>
