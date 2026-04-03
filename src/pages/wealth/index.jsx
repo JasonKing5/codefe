@@ -53,6 +53,8 @@ export default function SmartFinanceTool() {
   });
 
   const [exportDialogData, setExportDialogData] = useState(null);
+  const [showImportDialog, setShowImportDialog] = useState(false);
+  const [importTextData, setImportTextData] = useState('');
 
   const settingsRef = useRef(null);
   const categoryManagerRef = useRef(null);
@@ -342,39 +344,62 @@ export default function SmartFinanceTool() {
     }
   };
 
-  // 导入数据
-  const handleImport = (e) => {
+  // 解析并导入 JSON 数据（供文件导入和粘贴导入共用）
+  const processImportData = (jsonString) => {
+    try {
+      const importedData = JSON.parse(jsonString);
+      if (Array.isArray(importedData)) {
+        setTransactions(importedData);
+        alert('数据导入成功！');
+        return true;
+      } else if (importedData && Array.isArray(importedData.transactions)) {
+        setTransactions(importedData.transactions);
+        if (Array.isArray(importedData.customCategories) && importedData.customCategories.length > 0) {
+          setCustomCategories(prev => {
+            const existingIds = new Set(prev.map(c => c.id));
+            const newCategories = importedData.customCategories.filter(c => !existingIds.has(c.id));
+            return [...prev, ...newCategories];
+          });
+        }
+        alert('数据导入成功！');
+        return true;
+      } else {
+        alert('导入的文件格式不正确');
+        return false;
+      }
+    } catch (error) {
+      console.error('导入失败:', error);
+      alert('导入失败，请检查文件格式');
+      return false;
+    }
+  };
+
+  // 通过文件导入数据
+  const handleFileImport = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (event) => {
-      try {
-        const importedData = JSON.parse(event.target?.result);
-        if (Array.isArray(importedData)) {
-          setTransactions(importedData);
-          alert('数据导入成功！');
-        } else if (importedData && Array.isArray(importedData.transactions)) {
-          setTransactions(importedData.transactions);
-          if (Array.isArray(importedData.customCategories) && importedData.customCategories.length > 0) {
-            setCustomCategories(prev => {
-              const existingIds = new Set(prev.map(c => c.id));
-              const newCategories = importedData.customCategories.filter(c => !existingIds.has(c.id));
-              return [...prev, ...newCategories];
-            });
-          }
-          alert('数据导入成功！');
-        } else {
-          alert('导入的文件格式不正确');
-        }
-      } catch (error) {
-        console.error('导入失败:', error);
-        alert('导入失败，请检查文件格式');
+      if (processImportData(event.target?.result)) {
+        setShowImportDialog(false);
+        setImportTextData('');
       }
     };
     reader.readAsText(file);
-    // 重置input值，以便可以重复导入同一个文件
     e.target.value = '';
+  };
+
+  // 通过粘贴文本导入数据
+  const handleTextImport = () => {
+    if (!importTextData.trim()) {
+      alert('请粘贴 JSON 数据');
+      return;
+    }
+    if (processImportData(importTextData)) {
+      setShowImportDialog(false);
+      setImportTextData('');
+    }
   };
 
   // 添加新分类
@@ -690,15 +715,13 @@ export default function SmartFinanceTool() {
           >
             <FaDownload />
           </button>
-          <label className="action-btn" title="导入数据">
+          <button
+            className="action-btn"
+            title="导入数据"
+            onClick={() => setShowImportDialog(true)}
+          >
             <FaUpload />
-            <input 
-              type="file" 
-              accept=".json" 
-              onChange={handleImport}
-              style={{ display: 'none' }} 
-            />
-          </label>
+          </button>
         </div>
       </div>
 
@@ -1023,6 +1046,75 @@ export default function SmartFinanceTool() {
               >
                 关闭
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 导入数据弹框（支持选择文件或粘贴 JSON） */}
+      {showImportDialog && (
+        <div className="modal-overlay" onClick={() => { setShowImportDialog(false); setImportTextData(''); }}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>导入数据</h3>
+              <button className="close-btn" onClick={() => { setShowImportDialog(false); setImportTextData(''); }}>
+                <FaTimes />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {/* 方式一：选择文件 */}
+              <label className="btn btn-primary" style={{ textAlign: 'center', cursor: 'pointer', margin: 0 }}>
+                选择 JSON 文件
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={handleFileImport}
+                  style={{ display: 'none' }}
+                />
+              </label>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
+                <span>或粘贴 JSON 内容</span>
+                <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
+              </div>
+
+              {/* 方式二：粘贴 JSON */}
+              <textarea
+                value={importTextData}
+                onChange={e => setImportTextData(e.target.value)}
+                placeholder='粘贴导出的 JSON 数据...'
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  fontSize: '0.75rem',
+                  fontFamily: 'monospace',
+                  borderRadius: '8px',
+                  border: '1px solid var(--border-color)',
+                  padding: '8px',
+                  resize: 'vertical',
+                  background: 'var(--bg-secondary)',
+                  color: 'var(--text-primary)',
+                }}
+              />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleTextImport}
+                  style={{ flex: 1 }}
+                  disabled={!importTextData.trim()}
+                >
+                  导入粘贴内容
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => { setShowImportDialog(false); setImportTextData(''); }}
+                  style={{ flex: 0 }}
+                >
+                  关闭
+                </button>
+              </div>
             </div>
           </div>
         </div>
