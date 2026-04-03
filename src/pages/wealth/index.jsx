@@ -265,6 +265,33 @@ export default function SmartFinanceTool() {
     }
   };
 
+  // 通过系统分享或传统 <a> 触发下载（兼容百度浏览器等国产手机浏览器）
+  const triggerDownload = (blob, filename) => {
+    // 优先使用 Web Share API（移动端兼容性最好，绕过 blob:/data: URL 限制）
+    if (navigator.canShare) {
+      const file = new File([blob], filename, { type: 'application/json' });
+      if (navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file] }).catch(() => fallbackDownload(blob, filename));
+        return;
+      }
+    }
+    fallbackDownload(blob, filename);
+  };
+
+  const fallbackDownload = (blob, filename) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 150);
+  };
+
   // 导出数据
   const handleExport = async () => {
     const exportData = { transactions, customCategories };
@@ -278,20 +305,12 @@ export default function SmartFinanceTool() {
       });
       if (!res.ok) throw new Error('Download API failed');
       const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const linkElement = document.createElement('a');
-      linkElement.href = url;
-      linkElement.download = exportFileDefaultName;
-      linkElement.click();
-      URL.revokeObjectURL(url);
+      triggerDownload(blob, exportFileDefaultName);
     } catch {
-      // fallback: data URI 方式（桌面端兼容）
+      // fallback: 纯前端 Blob 方式
       const dataStr = JSON.stringify(exportData, null, 2);
-      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-      const linkElement = document.createElement('a');
-      linkElement.setAttribute('href', dataUri);
-      linkElement.setAttribute('download', exportFileDefaultName);
-      linkElement.click();
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      triggerDownload(blob, exportFileDefaultName);
     }
   };
 
